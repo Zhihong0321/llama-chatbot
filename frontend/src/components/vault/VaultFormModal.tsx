@@ -86,6 +86,9 @@ export const VaultFormModal: React.FC<VaultFormModalProps> = ({
     onClose();
   };
 
+  // Debug: Log when component renders
+  console.log('[VaultFormModal] Render - nameId:', nameId, 'Build: INPUT-FIX-V3');
+
   return (
     <Modal
       isOpen={isOpen}
@@ -94,6 +97,11 @@ export const VaultFormModal: React.FC<VaultFormModalProps> = ({
       size="md"
     >
       <form onSubmit={handleSubmit} className={styles.form}>
+        {/* VERSION INDICATOR */}
+        <div style={{ background: '#ff0000', color: 'white', padding: '4px 8px', marginBottom: '10px', fontSize: '11px', fontWeight: 'bold', textAlign: 'center' }}>
+          🔴 BUILD: INPUT-FIX-V3 | 2025-11-21-14:30 | ID: {nameId.substring(0, 15)}
+        </div>
+        
         {error && (
           <div className={styles.error} role="alert">
             {error}

@@ -42,6 +42,10 @@ export const Dashboard: React.FC = () => {
       <header className={styles.header}>
         <h1 className={styles.title}>Dashboard</h1>
         <p className={styles.subtitle}>Manage your knowledge bases and AI agents</p>
+        {/* VERSION INDICATOR - Remove after verifying */}
+        <div style={{ position: 'fixed', top: '10px', right: '10px', background: 'red', color: 'white', padding: '5px 10px', borderRadius: '5px', zIndex: 9999, fontSize: '12px', fontWeight: 'bold' }}>
+          BUILD: 2025-11-21-14:30 | INPUT-FIX-V3
+        </div>
       </header>
 
       {/* Vault Selector */}
