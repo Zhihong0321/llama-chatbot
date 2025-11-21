@@ -1,0 +1,51 @@
+.nav {
+  background: var(--color-surface, #fff);
+  border-bottom: 1px solid var(--color-border, #e0e0e0);
+  padding: 0 var(--spacing-lg, 2rem);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xl, 3rem);
+  height: 60px;
+  box-shadow: var(--shadow-sm, 0 1px 3px rgba(0, 0, 0, 0.1));
+}
+
+.brand h1 {
+  font-size: var(--font-size-lg, 1.25rem);
+  font-weight: 700;
+  color: var(--color-primary, #4a90e2);
+  margin: 0;
+}
+
+.navList {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: var(--spacing-md, 1rem);
+}
+
+.navLink {
+  display: block;
+  padding: var(--spacing-sm, 0.5rem) var(--spacing-md, 1rem);
+  color: var(--color-text-secondary, #666);
+  text-decoration: none;
+  font-weight: 500;
+  border-radius: var(--border-radius-md, 8px);
+  transition: all 0.2s ease;
+}
+
+.navLink:hover {
+  color: var(--color-primary, #4a90e2);
+  background: var(--color-background-secondary, #f5f5f5);
+}
+
+.navLink.active {
+  color: var(--color-primary, #4a90e2);
+  background: var(--color-primary-light, #e3f2fd);
+  font-weight: 600;
+}
+
+.navLink:focus-visible {
+  outline: 2px solid var(--color-primary, #4a90e2);
+  outline-offset: 2px;
+}

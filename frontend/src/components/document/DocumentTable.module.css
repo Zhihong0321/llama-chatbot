@@ -1,0 +1,121 @@
+/**
+ * DocumentTable Styles
+ */
+
+.container {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.loadingText,
+.emptyText {
+  padding: var(--spacing-8, 2rem);
+  text-align: center;
+  color: var(--text-secondary, #6b7280);
+  font-size: var(--font-size-base, 1rem);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--background-primary, #ffffff);
+  border-radius: var(--border-radius-lg, 0.5rem);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm, 0 1px 3px 0 rgba(0, 0, 0, 0.1));
+}
+
+.table thead {
+  background: var(--background-secondary, #f9fafb);
+  border-bottom: 2px solid var(--border-light, #e5e7eb);
+}
+
+.table th {
+  padding: var(--spacing-4, 1rem) var(--spacing-6, 1.5rem);
+  text-align: left;
+  font-weight: var(--font-weight-semibold, 600);
+  font-size: var(--font-size-sm, 0.875rem);
+  color: var(--text-primary, #111827);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wide, 0.025em);
+}
+
+.table tbody tr {
+  border-bottom: 1px solid var(--border-light, #e5e7eb);
+  transition: background-color var(--transition-fast, 150ms);
+}
+
+.table tbody tr:hover {
+  background: var(--background-secondary, #f9fafb);
+}
+
+.table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.table td {
+  padding: var(--spacing-4, 1rem) var(--spacing-6, 1.5rem);
+  font-size: var(--font-size-sm, 0.875rem);
+  color: var(--text-primary, #111827);
+}
+
+.titleCell {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-1, 0.25rem);
+}
+
+.title {
+  font-weight: var(--font-weight-medium, 500);
+  color: var(--text-primary, #111827);
+}
+
+.documentId,
+.vaultId {
+  font-family: var(--font-family-mono, monospace);
+  font-size: var(--font-size-xs, 0.75rem);
+  color: var(--text-secondary, #6b7280);
+}
+
+.deleteButton {
+  padding: var(--spacing-2, 0.5rem) var(--spacing-4, 1rem);
+  background: var(--error-main, #ef4444);
+  color: var(--text-inverse, #ffffff);
+  border: none;
+  border-radius: var(--border-radius-md, 0.375rem);
+  font-size: var(--font-size-sm, 0.875rem);
+  font-weight: var(--font-weight-medium, 500);
+  cursor: pointer;
+  transition: all var(--transition-fast, 150ms);
+}
+
+.deleteButton:hover:not(:disabled) {
+  background: var(--error-dark, #dc2626);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm, 0 1px 3px 0 rgba(0, 0, 0, 0.1));
+}
+
+.deleteButton:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.deleteButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.deleteButton:focus-visible {
+  outline: 2px solid var(--error-main, #ef4444);
+  outline-offset: 2px;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .table {
+    font-size: var(--font-size-xs, 0.75rem);
+  }
+
+  .table th,
+  .table td {
+    padding: var(--spacing-3, 0.75rem) var(--spacing-4, 1rem);
+  }
+}

@@ -1,0 +1,44 @@
+/* AgentCardList Styles */
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-height: 600px;
+  overflow-y: auto;
+}
+
+.loading {
+  padding: 2rem;
+  text-align: center;
+  color: var(--color-text-secondary, #666);
+  font-style: italic;
+}
+
+.empty {
+  padding: 2rem;
+  text-align: center;
+  color: var(--color-text-secondary, #666);
+  background: var(--color-surface, #f9f9f9);
+  border-radius: 8px;
+  border: 1px dashed var(--color-border, #ddd);
+}
+
+/* Scrollbar styling */
+.list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.list::-webkit-scrollbar-track {
+  background: var(--color-surface, #f5f5f5);
+  border-radius: 4px;
+}
+
+.list::-webkit-scrollbar-thumb {
+  background: var(--color-border, #ccc);
+  border-radius: 4px;
+}
+
+.list::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-secondary, #999);
+}
