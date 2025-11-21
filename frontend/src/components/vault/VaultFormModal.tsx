@@ -31,8 +31,9 @@ export const VaultFormModal: React.FC<VaultFormModalProps> = ({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const nameId = React.useId();
-  const descriptionId = React.useId();
+  // Use useMemo to ensure IDs are stable across renders (prevents input focus loss)
+  const nameId = React.useMemo(() => `vault-name-${Math.random().toString(36).substr(2, 9)}`, []);
+  const descriptionId = React.useMemo(() => `vault-desc-${Math.random().toString(36).substr(2, 9)}`, []);
 
   // Reset form when modal opens/closes or initialData changes
   useEffect(() => {

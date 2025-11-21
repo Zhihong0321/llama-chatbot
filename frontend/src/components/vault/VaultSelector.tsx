@@ -28,7 +28,8 @@ export const VaultSelector: React.FC<VaultSelectorProps> = ({
   label = 'Vault',
   required = false,
 }) => {
-  const selectId = React.useId();
+  // Use useMemo to ensure ID is stable across renders (prevents focus loss)
+  const selectId = React.useMemo(() => `vault-select-${Math.random().toString(36).substr(2, 9)}`, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
