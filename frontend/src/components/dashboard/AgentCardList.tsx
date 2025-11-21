@@ -21,6 +21,9 @@ export const AgentCardList: React.FC<AgentCardListProps> = ({
   loading,
   selectedVaultId,
 }) => {
+  // Defensive: ensure agents is always an array
+  const safeAgents = Array.isArray(agents) ? agents : [];
+
   if (loading) {
     return (
       <div className={styles.loading} role="status" aria-live="polite">
@@ -29,7 +32,7 @@ export const AgentCardList: React.FC<AgentCardListProps> = ({
     );
   }
 
-  if (agents.length === 0) {
+  if (safeAgents.length === 0) {
     return (
       <div className={styles.empty}>
         {selectedVaultId
@@ -41,7 +44,7 @@ export const AgentCardList: React.FC<AgentCardListProps> = ({
 
   return (
     <div className={styles.list}>
-      {agents.map((agent) => (
+      {safeAgents.map((agent) => (
         <AgentCard
           key={agent.agent_id}
           agent={agent}

@@ -22,6 +22,9 @@ export const RecentIngests: React.FC<RecentIngestsProps> = ({
   selectedVaultId,
   maxItems = 10,
 }) => {
+  // Defensive: ensure documents is always an array
+  const safeDocuments = Array.isArray(documents) ? documents : [];
+
   if (loading) {
     return (
       <div className={styles.loading} role="status" aria-live="polite">
@@ -30,7 +33,7 @@ export const RecentIngests: React.FC<RecentIngestsProps> = ({
     );
   }
 
-  if (documents.length === 0) {
+  if (safeDocuments.length === 0) {
     return (
       <div className={styles.empty}>
         {selectedVaultId
@@ -41,7 +44,7 @@ export const RecentIngests: React.FC<RecentIngestsProps> = ({
   }
 
   // Sort by created_at descending and take the most recent
-  const recentDocuments = [...documents]
+  const recentDocuments = [...safeDocuments]
     .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
     .slice(0, maxItems);
 

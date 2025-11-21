@@ -20,6 +20,10 @@ export const QuickChatBox: React.FC<QuickChatBoxProps> = ({
   vaults,
   selectedVaultId,
 }) => {
+  // Defensive: ensure arrays are always arrays
+  const safeAgents = Array.isArray(agents) ? agents : [];
+  const safeVaults = Array.isArray(vaults) ? vaults : [];
+
   const [chatMode, setChatMode] = useState<'agent' | 'vault'>('agent');
   const [selectedAgentId, setSelectedAgentId] = useState<string>('');
   const [selectedChatVaultId, setSelectedChatVaultId] = useState<string>(selectedVaultId || '');
@@ -77,16 +81,16 @@ export const QuickChatBox: React.FC<QuickChatBoxProps> = ({
               className={styles.select}
               value={selectedAgentId}
               onChange={(e) => setSelectedAgentId(e.target.value)}
-              disabled={agents.length === 0}
+              disabled={safeAgents.length === 0}
             >
               <option value="">Choose an agent...</option>
-              {agents.map((agent) => (
+              {safeAgents.map((agent) => (
                 <option key={agent.agent_id} value={agent.agent_id}>
                   {agent.name}
                 </option>
               ))}
             </select>
-            {agents.length === 0 && (
+            {safeAgents.length === 0 && (
               <p className={styles.hint}>No agents available. Create an agent first.</p>
             )}
           </div>
@@ -100,16 +104,16 @@ export const QuickChatBox: React.FC<QuickChatBoxProps> = ({
               className={styles.select}
               value={selectedChatVaultId}
               onChange={(e) => setSelectedChatVaultId(e.target.value)}
-              disabled={vaults.length === 0}
+              disabled={safeVaults.length === 0}
             >
               <option value="">Choose a vault...</option>
-              {vaults.map((vault) => (
+              {safeVaults.map((vault) => (
                 <option key={vault.id} value={vault.id}>
                   {vault.name}
                 </option>
               ))}
             </select>
-            {vaults.length === 0 && (
+            {safeVaults.length === 0 && (
               <p className={styles.hint}>No vaults available. Create a vault first.</p>
             )}
           </div>
