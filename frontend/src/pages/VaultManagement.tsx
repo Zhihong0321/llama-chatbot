@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { VaultList, VaultFormModal } from '../components/vault';
 import { Button } from '../components/common';
 import { useVaults } from '../hooks/useVaults';
@@ -8,16 +8,20 @@ export function VaultManagement() {
   const { vaults, loading, error, createVault, deleteVault, refetch } = useVaults();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const handleCreateVault = async (data: { name: string; description: string }) => {
+  const handleCreateVault = useCallback(async (data: { name: string; description: string }) => {
     await createVault(data);
     setIsModalOpen(false);
     refetch();
-  };
+  }, [createVault, refetch]);
 
-  const handleDeleteVault = async (vaultId: string) => {
+  const handleDeleteVault = useCallback(async (vaultId: string) => {
     await deleteVault(vaultId);
     refetch();
-  };
+  }, [deleteVault, refetch]);
+
+  const handleCloseModal = useCallback(() => {
+    setIsModalOpen(false);
+  }, []);
 
   return (
     <div className={styles.container}>
@@ -41,7 +45,7 @@ export function VaultManagement() {
 
       <VaultFormModal
         isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        onClose={handleCloseModal}
         onSubmit={handleCreateVault}
       />
     </div>
