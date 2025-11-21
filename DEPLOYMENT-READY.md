@@ -38,32 +38,35 @@
 
 ## 🚀 Next Steps: Deploy to Railway
 
-### Step 1: Go to Railway
-Visit: https://railway.app
+### ✅ Railway Configuration Added!
 
-### Step 2: Create New Project
-1. Click "New Project"
-2. Select "Deploy from GitHub repo"
-3. Choose: `Zhihong0321/llama-chatbot`
-4. Railway will auto-detect the project
+Your repository now includes auto-configuration files:
+- ✅ `railway.json` - Railway-specific config
+- ✅ `nixpacks.toml` - Build configuration
+- ✅ `package.json` - Root package file
+- ✅ `Procfile` - Process configuration
 
-### Step 3: Configure Build
-```
-Build Command: cd frontend && npm install && npm run build
-Start Command: cd frontend && npm run preview -- --host 0.0.0.0 --port $PORT
-Root Directory: /
-```
+**Railway will automatically detect and build your project!**
 
-### Step 4: Set Environment Variables
+### Quick Deploy (3 Steps)
+
+**See `RAILWAY-QUICK-START.md` for the fastest path to deployment!**
+
+#### Step 1: Create Railway Project
+1. Go to https://railway.app
+2. Click "New Project"
+3. Select "Deploy from GitHub repo"
+4. Choose: `Zhihong0321/llama-chatbot`
+
+#### Step 2: Set Environment Variable
 ```env
 VITE_API_BASE_URL=https://eternalgy-rag-llamaindex-production.up.railway.app
-NODE_ENV=production
 ```
 
-### Step 5: Deploy
-Click "Deploy" and wait 2-3 minutes for build to complete.
+#### Step 3: Deploy
+Click "Deploy" - Railway handles everything automatically!
 
-### Step 6: Verify
+### Verify Deployment
 Test your Railway URL:
 - [ ] Homepage loads
 - [ ] Can create agent
