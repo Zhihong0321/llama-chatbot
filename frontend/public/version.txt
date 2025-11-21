@@ -1,0 +1,3 @@
+Build: 2025-11-21-fix-input-focus
+Timestamp: 1732172400000
+Commit: Input focus fix with cache busting

@@ -31,7 +31,9 @@ export const VaultFormModal: React.FC<VaultFormModalProps> = ({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Use useMemo to ensure IDs are stable across renders (prevents input focus loss)
+  // FIXED: Use useMemo to ensure IDs are stable across renders (prevents input focus loss)
+  // Previously used React.useId() which generated new IDs on every render
+  // Build timestamp: 2025-11-21 14:00:00
   const nameId = React.useMemo(() => `vault-name-${Math.random().toString(36).substr(2, 9)}`, []);
   const descriptionId = React.useMemo(() => `vault-desc-${Math.random().toString(36).substr(2, 9)}`, []);
 

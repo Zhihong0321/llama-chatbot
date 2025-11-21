@@ -5,8 +5,15 @@ import react from '@vitejs/plugin-react';
 export default defineConfig({
   plugins: [react()],
   build: {
+    // Force cache busting on every build
+    assetsDir: 'assets',
+    sourcemap: false,
     rollupOptions: {
       output: {
+        // Add timestamp to chunk names to force cache invalidation
+        entryFileNames: `assets/[name]-[hash]-${Date.now()}.js`,
+        chunkFileNames: `assets/[name]-[hash]-${Date.now()}.js`,
+        assetFileNames: `assets/[name]-[hash]-${Date.now()}.[ext]`,
         manualChunks: {
           'react-vendor': ['react', 'react-dom', 'react-router-dom'],
           chat: ['./src/pages/ChatConsole.tsx'],
