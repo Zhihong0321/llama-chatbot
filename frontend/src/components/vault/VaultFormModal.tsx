@@ -5,7 +5,7 @@
  * Requirements: 1.1, 1.2
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Modal } from '../common/Modal';
 import { Button } from '../common/Button';
 import type { VaultCreateRequest } from '../../api/types';
@@ -30,12 +30,13 @@ export const VaultFormModal: React.FC<VaultFormModalProps> = React.memo(({
   const [description, setDescription] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  
+  // Use ref for input to prevent focus loss
+  const nameInputRef = useRef<HTMLInputElement>(null);
 
-  // FIXED: Use useMemo to ensure IDs are stable across renders (prevents input focus loss)
-  // Previously used React.useId() which generated new IDs on every render
-  // Build timestamp: 2025-11-21 14:00:00
-  const nameId = React.useMemo(() => `vault-name-${Math.random().toString(36).substr(2, 9)}`, []);
-  const descriptionId = React.useMemo(() => `vault-desc-${Math.random().toString(36).substr(2, 9)}`, []);
+  // FIXED: Use stable IDs that never change
+  const nameId = useRef(`vault-name-${Math.random().toString(36).substr(2, 9)}`).current;
+  const descriptionId = useRef(`vault-desc-${Math.random().toString(36).substr(2, 9)}`).current;
 
   // Reset form when modal opens/closes or initialData changes
   useEffect(() => {
@@ -43,10 +44,15 @@ export const VaultFormModal: React.FC<VaultFormModalProps> = React.memo(({
       setName(initialData?.name || '');
       setDescription(initialData?.description || '');
       setError(null);
+      
+      // Focus input after a short delay to avoid conflict with Modal focus trap
+      setTimeout(() => {
+        nameInputRef.current?.focus();
+      }, 100);
     }
   }, [isOpen, initialData]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
 
@@ -77,17 +83,17 @@ export const VaultFormModal: React.FC<VaultFormModalProps> = React.memo(({
     } finally {
       setIsSubmitting(false);
     }
-  };
+  }, [name, description, onSubmit, onClose]);
 
-  const handleCancel = () => {
+  const handleCancel = useCallback(() => {
     setName('');
     setDescription('');
     setError(null);
     onClose();
-  };
+  }, [onClose]);
 
   // Debug: Log when component renders
-  console.log('[VaultFormModal] Render - nameId:', nameId, 'Build: INPUT-FIX-V3');
+  console.log('[VaultFormModal] Render - nameId:', nameId, 'name:', name, 'Build: INPUT-FIX-V5');
 
   return (
     <Modal
@@ -98,8 +104,8 @@ export const VaultFormModal: React.FC<VaultFormModalProps> = React.memo(({
     >
       <form onSubmit={handleSubmit} className={styles.form}>
         {/* VERSION INDICATOR */}
-        <div style={{ background: '#00ff00', color: 'black', padding: '4px 8px', marginBottom: '10px', fontSize: '11px', fontWeight: 'bold', textAlign: 'center' }}>
-          🟢 BUILD: INPUT-FIX-V4-CALLBACK | 2025-11-21-15:00 | ID: {nameId.substring(0, 15)}
+        <div style={{ background: '#0000ff', color: 'white', padding: '4px 8px', marginBottom: '10px', fontSize: '11px', fontWeight: 'bold', textAlign: 'center' }}>
+          🔵 BUILD: INPUT-FIX-V5-REF | 2025-11-21-15:15 | ID: {nameId.substring(0, 15)}
         </div>
         
         {error && (
@@ -113,6 +119,7 @@ export const VaultFormModal: React.FC<VaultFormModalProps> = React.memo(({
             Vault Name <span className={styles.required} aria-label="required">*</span>
           </label>
           <input
+            ref={nameInputRef}
             id={nameId}
             type="text"
             className={styles.input}
@@ -121,7 +128,6 @@ export const VaultFormModal: React.FC<VaultFormModalProps> = React.memo(({
             placeholder="Enter vault name"
             required
             disabled={isSubmitting}
-            autoFocus
           />
         </div>
 
