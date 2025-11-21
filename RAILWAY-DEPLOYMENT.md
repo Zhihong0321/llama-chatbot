@@ -45,13 +45,24 @@ git push origin main
 4. Choose your repository
 5. Railway will auto-detect the project
 
-### Step 3: Configure Build Settings
+### Step 3: Railway Auto-Configuration
 
-In Railway project settings:
+Railway will automatically detect the configuration from these files:
+- ✅ `railway.json` - Railway-specific configuration
+- ✅ `nixpacks.toml` - Build configuration
+- ✅ `package.json` - Root package file
+- ✅ `Procfile` - Process configuration (fallback)
+
+**No manual configuration needed!** Railway will automatically:
+- Install dependencies from `frontend/package.json`
+- Build the app with `npm run build`
+- Start the preview server on the correct port
+
+If you need to manually configure (optional):
 
 #### Build Configuration
 ```
-Build Command: cd frontend && npm install && npm run build
+Build Command: cd frontend && npm ci && npm run build
 ```
 
 #### Start Configuration
@@ -62,11 +73,6 @@ Start Command: cd frontend && npm run preview -- --host 0.0.0.0 --port $PORT
 #### Root Directory
 ```
 Root Directory: /
-```
-
-#### Output Directory
-```
-Output Directory: frontend/dist
 ```
 
 ### Step 4: Set Environment Variables
