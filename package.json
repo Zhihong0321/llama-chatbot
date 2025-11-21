@@ -4,7 +4,7 @@
   "description": "LlamaIndex RAG Frontend - Production-ready React application",
   "private": true,
   "scripts": {
-    "install": "cd frontend && npm install",
+    "install": "cd frontend && npm install --legacy-peer-deps",
     "build": "cd frontend && npm run build",
     "start": "cd frontend && npm run preview -- --host 0.0.0.0 --port ${PORT:-4173}",
     "dev": "cd frontend && npm run dev",
