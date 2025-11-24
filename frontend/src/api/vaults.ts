@@ -92,22 +92,28 @@ export async function createVault(data: VaultCreateRequest): Promise<VaultRespon
  * GET /vaults
  */
 export async function getVaults(): Promise<Vault[]> {
+  console.log('🔧 getVaults v2024-11-21-16:10 - WITH ARRAY CHECK');
+  
   const cacheKey = 'vaults';
   
   // Check cache first
   const cached = getCached<Vault[]>(cacheKey);
   if (cached) {
+    console.log('✅ getVaults: Returning cached data', cached);
     return cached;
   }
 
   // Fetch from API
   const result = await get<any>('/vaults');
+  console.log('📥 getVaults: Raw API response:', result);
   
   // Ensure result is an array
   if (!Array.isArray(result)) {
-    console.error('getVaults: Expected array but got:', typeof result, result);
+    console.error('❌ getVaults: Expected array but got:', typeof result, result);
     return [];
   }
+  
+  console.log('✅ getVaults: Result is array, transforming...');
   
   // Transform backend response (vault_id) to frontend format (id)
   const vaults: Vault[] = result.map(v => ({
@@ -116,6 +122,8 @@ export async function getVaults(): Promise<Vault[]> {
     description: v.description,
     created_at: v.created_at
   }));
+  
+  console.log('✅ getVaults: Transformed vaults:', vaults);
   
   // Cache the result
   setCached(cacheKey, vaults);

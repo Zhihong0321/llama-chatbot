@@ -5,6 +5,9 @@ import { useVaults } from '../hooks/useVaults';
 import styles from './VaultManagement.module.css';
 
 export function VaultManagement() {
+  // VERSION MARKER - Check console to verify latest deployment
+  console.log('🚀 VaultManagement v2024-11-21-16:10 - Array safety fixes applied');
+  
   const { vaults, loading, error, createVault, deleteVault, refetch } = useVaults();
   const [isModalOpen, setIsModalOpen] = useState(false);
 

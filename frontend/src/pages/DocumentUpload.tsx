@@ -6,6 +6,9 @@ import { useDocuments } from '../hooks/useDocuments';
 import styles from './DocumentUpload.module.css';
 
 export function DocumentUpload() {
+  // VERSION MARKER - Check console to verify latest deployment
+  console.log('🚀 DocumentUpload v2024-11-21-16:10 - Array safety fixes applied');
+  
   const { vaults, loading: vaultsLoading, error: vaultsError } = useVaults();
   const [selectedVaultId, setSelectedVaultId] = useState<string | null>(null);
   const { documents, loading: documentsLoading, deleteDoc, refetch } = useDocuments(selectedVaultId || undefined);
