@@ -71,12 +71,20 @@ function invalidateCache(pattern?: string): void {
  * POST /vaults
  */
 export async function createVault(data: VaultCreateRequest): Promise<VaultResponse> {
-  const result = await post<VaultResponse>('/vaults', data);
+  const result = await post<any>('/vaults', data);
+  
+  // Transform backend response (vault_id) to frontend format (id)
+  const vault: VaultResponse = {
+    id: result.vault_id,
+    name: result.name,
+    description: result.description,
+    created_at: result.created_at
+  };
   
   // Invalidate vault list cache after creation
   invalidateCache('vaults');
   
-  return result;
+  return vault;
 }
 
 /**
@@ -93,12 +101,20 @@ export async function getVaults(): Promise<Vault[]> {
   }
 
   // Fetch from API
-  const result = await get<Vault[]>('/vaults');
+  const result = await get<any[]>('/vaults');
+  
+  // Transform backend response (vault_id) to frontend format (id)
+  const vaults: Vault[] = result.map(v => ({
+    id: v.vault_id,
+    name: v.name,
+    description: v.description,
+    created_at: v.created_at
+  }));
   
   // Cache the result
-  setCached(cacheKey, result);
+  setCached(cacheKey, vaults);
   
-  return result;
+  return vaults;
 }
 
 /**
@@ -115,12 +131,20 @@ export async function getVault(vaultId: string): Promise<VaultResponse> {
   }
 
   // Fetch from API
-  const result = await get<VaultResponse>(`/vaults/${vaultId}`);
+  const result = await get<any>(`/vaults/${vaultId}`);
+  
+  // Transform backend response (vault_id) to frontend format (id)
+  const vault: VaultResponse = {
+    id: result.vault_id,
+    name: result.name,
+    description: result.description,
+    created_at: result.created_at
+  };
   
   // Cache the result
-  setCached(cacheKey, result);
+  setCached(cacheKey, vault);
   
-  return result;
+  return vault;
 }
 
 /**

@@ -9,14 +9,24 @@ export function VaultManagement() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleCreateVault = useCallback(async (data: { name: string; description: string }) => {
-    await createVault(data);
-    setIsModalOpen(false);
-    refetch();
+    try {
+      await createVault(data);
+      setIsModalOpen(false);
+      refetch();
+    } catch (err) {
+      console.error('Failed to create vault:', err);
+      // Error will be shown by useVaults hook
+    }
   }, [createVault, refetch]);
 
   const handleDeleteVault = useCallback(async (vaultId: string) => {
-    await deleteVault(vaultId);
-    refetch();
+    try {
+      await deleteVault(vaultId);
+      refetch();
+    } catch (err) {
+      console.error('Failed to delete vault:', err);
+      // Error will be shown by useVaults hook
+    }
   }, [deleteVault, refetch]);
 
   const handleCloseModal = useCallback(() => {
@@ -38,7 +48,7 @@ export function VaultManagement() {
         <div className={styles.loading}>Loading vaults...</div>
       ) : (
         <VaultList
-          vaults={vaults}
+          vaults={vaults || []}
           onVaultDelete={handleDeleteVault}
         />
       )}
