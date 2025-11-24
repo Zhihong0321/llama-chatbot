@@ -204,7 +204,7 @@ export const DocumentUploadForm: React.FC<DocumentUploadFormProps> = ({
             Vault <span className={styles.required}>*</span>
           </label>
           <VaultSelector
-            vaults={vaults}
+            vaults={Array.isArray(vaults) ? vaults : []}
             selectedVaultId={selectedVaultId}
             onSelect={setSelectedVaultId}
             disabled={ingesting}
