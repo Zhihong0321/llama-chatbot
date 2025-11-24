@@ -30,12 +30,14 @@ export function DocumentUpload() {
           <label htmlFor="vault-select">Select Vault:</label>
           {vaultsError ? (
             <div className={styles.error}>Error loading vaults: {vaultsError}</div>
+          ) : vaultsLoading ? (
+            <div>Loading vaults...</div>
           ) : (
             <VaultSelector
-              vaults={vaults || []}
+              vaults={Array.isArray(vaults) ? vaults : []}
               selectedVaultId={selectedVaultId}
               onSelect={setSelectedVaultId}
-              disabled={vaultsLoading}
+              disabled={false}
             />
           )}
         </div>

@@ -58,7 +58,7 @@ export const VaultSelector: React.FC<VaultSelectorProps> = ({
         <option value="" disabled>
           {placeholder}
         </option>
-        {vaults.map((vault) => (
+        {Array.isArray(vaults) && vaults.map((vault) => (
           <option key={vault.id} value={vault.id}>
             {vault.name} - {vault.description}
           </option>
