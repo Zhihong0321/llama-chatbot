@@ -101,7 +101,13 @@ export async function getVaults(): Promise<Vault[]> {
   }
 
   // Fetch from API
-  const result = await get<any[]>('/vaults');
+  const result = await get<any>('/vaults');
+  
+  // Ensure result is an array
+  if (!Array.isArray(result)) {
+    console.error('getVaults: Expected array but got:', typeof result, result);
+    return [];
+  }
   
   // Transform backend response (vault_id) to frontend format (id)
   const vaults: Vault[] = result.map(v => ({
