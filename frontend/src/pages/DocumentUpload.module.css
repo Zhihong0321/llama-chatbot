@@ -61,3 +61,11 @@
   padding: var(--spacing-xl, 3rem);
   color: var(--color-text-secondary, #666);
 }
+
+.error {
+  padding: var(--spacing-md, 1rem);
+  background-color: var(--color-error-bg, #fee);
+  color: var(--color-error, #c00);
+  border-radius: var(--border-radius-md, 8px);
+  margin-top: var(--spacing-sm, 0.5rem);
+}

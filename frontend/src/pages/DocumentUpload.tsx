@@ -6,7 +6,7 @@ import { useDocuments } from '../hooks/useDocuments';
 import styles from './DocumentUpload.module.css';
 
 export function DocumentUpload() {
-  const { vaults, loading: vaultsLoading } = useVaults();
+  const { vaults, loading: vaultsLoading, error: vaultsError } = useVaults();
   const [selectedVaultId, setSelectedVaultId] = useState<string | null>(null);
   const { documents, loading: documentsLoading, deleteDoc, refetch } = useDocuments(selectedVaultId || undefined);
 
@@ -25,12 +25,16 @@ export function DocumentUpload() {
         <h1>Document Upload</h1>
         <div className={styles.vaultSelector}>
           <label htmlFor="vault-select">Select Vault:</label>
-          <VaultSelector
-            vaults={vaults}
-            selectedVaultId={selectedVaultId}
-            onSelect={setSelectedVaultId}
-            disabled={vaultsLoading}
-          />
+          {vaultsError ? (
+            <div className={styles.error}>Error loading vaults: {vaultsError}</div>
+          ) : (
+            <VaultSelector
+              vaults={vaults || []}
+              selectedVaultId={selectedVaultId}
+              onSelect={setSelectedVaultId}
+              disabled={vaultsLoading}
+            />
+          )}
         </div>
       </div>
 
@@ -39,7 +43,7 @@ export function DocumentUpload() {
           <h2>Upload Document</h2>
           <DocumentUploadForm
             vaultId={selectedVaultId}
-            vaults={vaults}
+            vaults={vaults || []}
             onUploadComplete={handleUploadComplete}
           />
         </div>
@@ -51,7 +55,7 @@ export function DocumentUpload() {
           <div className={styles.loading}>Loading documents...</div>
         ) : (
           <DocumentTable
-            documents={documents}
+            documents={documents || []}
             onDocumentDelete={handleDeleteDocument}
             vaultId={selectedVaultId || undefined}
           />
