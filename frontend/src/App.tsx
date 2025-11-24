@@ -1,6 +1,7 @@
 import { lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Navigation } from './components/common';
+import { ErrorBoundary } from './components/common/ErrorBoundary';
 import { ToastProvider } from './context/ToastContext';
 import { Dashboard, VaultManagement, DocumentUpload, AgentManagement } from './pages';
 import './App.css';
@@ -17,15 +18,17 @@ function App() {
         <div className="app">
           <Navigation />
           <main className="main-content">
-            <Suspense fallback={<div className="loading-page">Loading...</div>}>
-              <Routes>
-                <Route path="/" element={<Dashboard />} />
-                <Route path="/vaults" element={<VaultManagement />} />
-                <Route path="/documents" element={<DocumentUpload />} />
-                <Route path="/agents" element={<AgentManagement />} />
-                <Route path="/chat" element={<ChatConsole />} />
-              </Routes>
-            </Suspense>
+            <ErrorBoundary>
+              <Suspense fallback={<div className="loading-page">Loading...</div>}>
+                <Routes>
+                  <Route path="/" element={<Dashboard />} />
+                  <Route path="/vaults" element={<VaultManagement />} />
+                  <Route path="/documents" element={<DocumentUpload />} />
+                  <Route path="/agents" element={<AgentManagement />} />
+                  <Route path="/chat" element={<ChatConsole />} />
+                </Routes>
+              </Suspense>
+            </ErrorBoundary>
           </main>
         </div>
       </ToastProvider>
