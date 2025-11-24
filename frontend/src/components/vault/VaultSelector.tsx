@@ -20,7 +20,7 @@ export interface VaultSelectorProps {
 }
 
 export const VaultSelector: React.FC<VaultSelectorProps> = ({
-  vaults,
+  vaults: vaultsProp,
   selectedVaultId,
   onSelect,
   disabled = false,
@@ -28,6 +28,16 @@ export const VaultSelector: React.FC<VaultSelectorProps> = ({
   label = 'Vault',
   required = false,
 }) => {
+  // SAFETY: Ensure vaults is always an array
+  const vaults = React.useMemo(() => {
+    if (!vaultsProp) return [];
+    if (!Array.isArray(vaultsProp)) {
+      console.error('VaultSelector: vaults prop is not an array:', typeof vaultsProp, vaultsProp);
+      return [];
+    }
+    return vaultsProp;
+  }, [vaultsProp]);
+  
   // Use useMemo to ensure ID is stable across renders (prevents focus loss)
   const selectId = React.useMemo(() => `vault-select-${Math.random().toString(36).substr(2, 9)}`, []);
 
@@ -58,7 +68,7 @@ export const VaultSelector: React.FC<VaultSelectorProps> = ({
         <option value="" disabled>
           {placeholder}
         </option>
-        {Array.isArray(vaults) && vaults.map((vault) => (
+        {vaults.map((vault) => (
           <option key={vault.id} value={vault.id}>
             {vault.name} - {vault.description}
           </option>
