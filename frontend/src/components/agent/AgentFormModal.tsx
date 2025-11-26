@@ -19,7 +19,7 @@ export interface AgentFormModalProps {
   loading?: boolean;
 }
 
-export const AgentFormModal: React.FC<AgentFormModalProps> = React.memo(({
+const AgentFormModalComponent: React.FC<AgentFormModalProps> = ({
   isOpen,
   onClose,
   onSubmit,
@@ -193,5 +193,17 @@ export const AgentFormModal: React.FC<AgentFormModalProps> = React.memo(({
         </div>
       </form>
     </Modal>
+  );
+};
+
+// Memo with custom comparison to prevent re-renders when vaults array reference changes
+export const AgentFormModal = React.memo(AgentFormModalComponent, (prevProps, nextProps) => {
+  return (
+    prevProps.isOpen === nextProps.isOpen &&
+    prevProps.onClose === nextProps.onClose &&
+    prevProps.onSubmit === nextProps.onSubmit &&
+    prevProps.loading === nextProps.loading &&
+    prevProps.initialData === nextProps.initialData &&
+    JSON.stringify(prevProps.vaults) === JSON.stringify(nextProps.vaults)
   );
 });

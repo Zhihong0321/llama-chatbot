@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Input Focus Test</title>
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+  <div id="root"></div>
+  
+  <script type="text/babel">
+    const { useState, useCallback, memo } = React;
+    
+    // Simulating the Modal component
+    const Modal = memo(({ isOpen, onClose, children }) => {
+      if (!isOpen) return null;
+      
+      return (
+        <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div style={{ background: 'white', padding: '20px', borderRadius: '8px', minWidth: '400px' }}>
+            <button onClick={onClose} style={{ float: 'right' }}>X</button>
+            {children}
+          </div>
+        </div>
+      );
+    });
+    
+    // Simulating the FormModal component
+    const FormModal = memo(({ isOpen, onClose, onSubmit }) => {
+      const [name, setName] = useState('');
+      
+      console.log('[FormModal] Render - name:', name);
+      
+      const handleSubmit = useCallback((e) => {
+        e.preventDefault();
+        onSubmit({ name });
+      }, [name, onSubmit]);
+      
+      return (
+        <Modal isOpen={isOpen} onClose={onClose}>
+          <h2>Test Form</h2>
+          <form onSubmit={handleSubmit}>
+            <div>
+              <label>Name:</label>
+              <input
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Type here..."
+                autoFocus
+              />
+            </div>
+            <button type="submit">Submit</button>
+          </form>
+        </Modal>
+      );
+    });
+    
+    // Main App
+    function App() {
+      const [isModalOpen, setIsModalOpen] = useState(false);
+      
+      const handleSubmit = useCallback((data) => {
+        console.log('Submitted:', data);
+        setIsModalOpen(false);
+      }, []);
+      
+      const handleClose = useCallback(() => {
+        setIsModalOpen(false);
+      }, []);
+      
+      return (
+        <div style={{ padding: '20px' }}>
+          <h1>Input Focus Test</h1>
+          <button onClick={() => setIsModalOpen(true)}>Open Modal</button>
+          
+          <FormModal
+            isOpen={isModalOpen}
+            onClose={handleClose}
+            onSubmit={handleSubmit}
+          />
+        </div>
+      );
+    }
+    
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+</body>
+</html>

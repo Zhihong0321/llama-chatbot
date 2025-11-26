@@ -19,7 +19,7 @@ export interface VaultFormModalProps {
   mode?: 'create' | 'edit';
 }
 
-export const VaultFormModal: React.FC<VaultFormModalProps> = React.memo(({
+const VaultFormModalComponent: React.FC<VaultFormModalProps> = ({
   isOpen,
   onClose,
   onSubmit,
@@ -167,5 +167,16 @@ export const VaultFormModal: React.FC<VaultFormModalProps> = React.memo(({
         </div>
       </form>
     </Modal>
+  );
+};
+
+// Memo with custom comparison
+export const VaultFormModal = React.memo(VaultFormModalComponent, (prevProps, nextProps) => {
+  return (
+    prevProps.isOpen === nextProps.isOpen &&
+    prevProps.onClose === nextProps.onClose &&
+    prevProps.onSubmit === nextProps.onSubmit &&
+    prevProps.mode === nextProps.mode &&
+    JSON.stringify(prevProps.initialData) === JSON.stringify(nextProps.initialData)
   );
 });
