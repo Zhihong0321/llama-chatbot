@@ -31,22 +31,26 @@ const AgentFormModalComponent: React.FC<AgentFormModalProps> = ({
   const [vaultId, setVaultId] = useState('');
   const [systemPrompt, setSystemPrompt] = useState('');
   const [errors, setErrors] = useState<Record<string, string>>({});
+  
+  // Use ref for input to prevent focus loss
+  const nameInputRef = React.useRef<HTMLInputElement>(null);
 
   // Initialize form with initial data
   useEffect(() => {
-    if (initialData) {
-      setName(initialData.name || '');
-      setVaultId(initialData.vault_id || '');
-      setSystemPrompt(initialData.system_prompt || '');
-    } else {
-      setName('');
-      setVaultId('');
-      setSystemPrompt('');
+    if (isOpen) {
+      setName(initialData?.name || '');
+      setVaultId(initialData?.vault_id || '');
+      setSystemPrompt(initialData?.system_prompt || '');
+      setErrors({});
+      
+      // Focus input after a short delay to avoid conflict with Modal focus trap
+      setTimeout(() => {
+        nameInputRef.current?.focus();
+      }, 100);
     }
-    setErrors({});
   }, [initialData, isOpen]);
 
-  const validateForm = (): boolean => {
+  const validateForm = React.useCallback((): boolean => {
     const newErrors: Record<string, string> = {};
 
     if (!name.trim()) {
@@ -63,9 +67,9 @@ const AgentFormModalComponent: React.FC<AgentFormModalProps> = ({
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
-  };
+  }, [name, vaultId, systemPrompt]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = React.useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!validateForm()) {
@@ -80,20 +84,24 @@ const AgentFormModalComponent: React.FC<AgentFormModalProps> = ({
 
     try {
       await onSubmit(agentData);
-      handleClose();
+      setName('');
+      setVaultId('');
+      setSystemPrompt('');
+      setErrors({});
+      onClose();
     } catch (error) {
       // Error handling is done by parent component
       console.error('Failed to submit agent:', error);
     }
-  };
+  }, [name, vaultId, systemPrompt, validateForm, onSubmit, onClose]);
 
-  const handleClose = () => {
+  const handleClose = React.useCallback(() => {
     setName('');
     setVaultId('');
     setSystemPrompt('');
     setErrors({});
     onClose();
-  };
+  }, [onClose]);
 
   return (
     <Modal isOpen={isOpen} onClose={handleClose} title={initialData ? 'Edit Agent' : 'Create Agent'}>
@@ -103,6 +111,7 @@ const AgentFormModalComponent: React.FC<AgentFormModalProps> = ({
             Agent Name <span className={styles.required}>*</span>
           </label>
           <input
+            ref={nameInputRef}
             id="agent-name"
             type="text"
             value={name}
