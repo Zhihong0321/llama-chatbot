@@ -50,8 +50,8 @@ export const Modal: React.FC<ModalProps> = ({
     const modalElement = modalRef.current;
     if (!modalElement) return;
 
-    // Focus the modal container
-    modalElement.focus();
+    // DON'T focus the modal container immediately - let child components handle their own focus
+    // modalElement.focus();
 
     // Handle keyboard navigation
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -60,28 +60,8 @@ export const Modal: React.FC<ModalProps> = ({
         return;
       }
 
-      if (e.key === 'Tab') {
-        const focusableElements = modalElement.querySelectorAll<HTMLElement>(
-          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-        );
-        const focusableArray = Array.from(focusableElements);
-        const firstElement = focusableArray[0];
-        const lastElement = focusableArray[focusableArray.length - 1];
-
-        if (e.shiftKey) {
-          // Shift + Tab
-          if (document.activeElement === firstElement) {
-            e.preventDefault();
-            lastElement?.focus();
-          }
-        } else {
-          // Tab
-          if (document.activeElement === lastElement) {
-            e.preventDefault();
-            firstElement?.focus();
-          }
-        }
-      }
+      // REMOVED Tab key handling - it was interfering with input focus
+      // Let browser handle tab navigation naturally
     };
 
     document.addEventListener('keydown', handleKeyDown);
