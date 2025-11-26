@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { AgentList, AgentFormModal } from '../components/agent';
 import { VaultSelector } from '../components/vault';
 import { Button } from '../components/common';
@@ -13,16 +13,20 @@ export function AgentManagement() {
   const { agents, loading: agentsLoading, error, createAgent, deleteAgent, refetch } = useAgents(selectedVaultId || undefined);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const handleCreateAgent = async (data: AgentCreateRequest) => {
+  const handleCreateAgent = useCallback(async (data: AgentCreateRequest) => {
     await createAgent(data);
     setIsModalOpen(false);
     refetch();
-  };
+  }, [createAgent, refetch]);
 
-  const handleDeleteAgent = async (agentId: string) => {
+  const handleDeleteAgent = useCallback(async (agentId: string) => {
     await deleteAgent(agentId);
     refetch();
-  };
+  }, [deleteAgent, refetch]);
+
+  const handleCloseModal = useCallback(() => {
+    setIsModalOpen(false);
+  }, []);
 
   return (
     <div className={styles.container}>
@@ -57,7 +61,7 @@ export function AgentManagement() {
 
       <AgentFormModal
         isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        onClose={handleCloseModal}
         onSubmit={handleCreateAgent}
         vaults={vaults}
       />

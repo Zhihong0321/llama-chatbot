@@ -27,7 +27,7 @@ const ACCEPTED_MIME_TYPES = [
   'text/markdown',
 ];
 
-export const DocumentUploadForm: React.FC<DocumentUploadFormProps> = ({
+export const DocumentUploadForm: React.FC<DocumentUploadFormProps> = React.memo(({
   vaultId: initialVaultId,
   vaults,
   onUploadComplete,
@@ -302,4 +302,4 @@ export const DocumentUploadForm: React.FC<DocumentUploadFormProps> = ({
       </form>
     </div>
   );
-};
+});

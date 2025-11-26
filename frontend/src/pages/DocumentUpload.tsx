@@ -1,4 +1,4 @@
-// import { useState } from 'react';
+import { useCallback } from 'react';
 import { DocumentTable, DocumentUploadForm } from '../components/document';
 // import { VaultSelector } from '../components/vault';
 // import { useVaults } from '../hooks/useVaults';
@@ -14,14 +14,14 @@ export function DocumentUpload() {
   const selectedVaultId = null;
   const { documents, loading: documentsLoading, deleteDoc, refetch } = useDocuments(selectedVaultId || undefined);
 
-  const handleUploadComplete = () => {
+  const handleUploadComplete = useCallback(() => {
     refetch();
-  };
+  }, [refetch]);
 
-  const handleDeleteDocument = async (documentId: string) => {
+  const handleDeleteDocument = useCallback(async (documentId: string) => {
     await deleteDoc(documentId);
     refetch();
-  };
+  }, [deleteDoc, refetch]);
 
   return (
     <div className={styles.container}>

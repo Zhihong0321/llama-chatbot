@@ -19,7 +19,7 @@ export interface AgentFormModalProps {
   loading?: boolean;
 }
 
-export const AgentFormModal: React.FC<AgentFormModalProps> = ({
+export const AgentFormModal: React.FC<AgentFormModalProps> = React.memo(({
   isOpen,
   onClose,
   onSubmit,
@@ -194,4 +194,4 @@ export const AgentFormModal: React.FC<AgentFormModalProps> = ({
       </form>
     </Modal>
   );
-};
+});
